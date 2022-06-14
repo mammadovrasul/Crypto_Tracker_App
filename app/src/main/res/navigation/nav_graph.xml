@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="app.guava.cryptotracker.presentation.ui.fragment.list.CryptoRateListFragment"
+        android:label="RatesList">
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_rate_history"
+            app:destination="@id/navigation_rate_history"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_rate_history"
+        android:name="app.guava.cryptotracker.presentation.ui.fragment.history.HistoryFragment"
+        android:label="RateHistory">
+        <argument
+            android:name="type"
+            app:argType="string" />
+    </fragment>
+
+</navigation>
