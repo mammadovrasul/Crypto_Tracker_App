@@ -28,7 +28,7 @@
         </activity>
 
         <service
-            android:name=".presentation.services.CheckRateService"
+            android:name=".presentation.services.CheckCoinRateService"
             android:exported="false" />
     </application>
 

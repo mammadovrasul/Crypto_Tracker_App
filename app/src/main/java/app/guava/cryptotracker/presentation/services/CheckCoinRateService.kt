@@ -16,22 +16,22 @@ import app.guava.cryptotracker.R
 import app.guava.cryptotracker.domain.model.enums.CryptoType
 import app.guava.cryptotracker.domain.useCase.ExchangeRatesUseCase
 import app.guava.cryptotracker.domain.useCase.LastSetRangeUseCase
-import app.guava.cryptotracker.presentation.manager.RatesManager
+import app.guava.cryptotracker.presentation.manager.CoinRatesManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CheckRateService : Service() {
-    private val TAG = "CheckRateService"
+class CheckCoinRateService : Service() {
     private val serviceNotificationID = 999
     private val warningNotificationID = 888
     private val backgroundScope = CoroutineScope(IO)
-    private val notificationChannelId = "checkRateService"
+    private val notificationChannelId = "GuavaPay"
 
     @Inject
     lateinit var exchangeRatesUseCase: ExchangeRatesUseCase
@@ -55,7 +55,7 @@ class CheckRateService : Service() {
                 applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val channel = NotificationChannel(
                 notificationChannelId,
-                "Endless Service notifications channel", NotificationManager.IMPORTANCE_LOW
+                "Notifications channel", NotificationManager.IMPORTANCE_LOW
             )
             channel.enableLights(true)
             channel.lightColor = Color.GRAY
@@ -65,15 +65,13 @@ class CheckRateService : Service() {
 
         val mBuilder =
             NotificationCompat.Builder(this, notificationChannelId)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("Rates")
-                .setContentText("Rates are being checked")
+                .setSmallIcon(R.drawable.ic_baseline_trending_up_24)
+                .setContentTitle("Crypto Service")
+                .setContentText("Crypto Service working")
         return mBuilder.build()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG, "onStartCommand: ")
-
         backgroundScope.launch {
             while (true) {
                 try {
@@ -81,8 +79,9 @@ class CheckRateService : Service() {
                     val ethRate = lastSetRangeUseCase.execute(CryptoType.ETH.name)
                     val xrpRate = lastSetRangeUseCase.execute(CryptoType.XRP.name)
 
+                    Log.d("RUSSLE", "onStartCommand: >>-->>>")
                     val response = exchangeRatesUseCase.execute()
-                    RatesManager.sharadFlow.emit(response)
+                    CoinRatesManager.sharadFlow.emit(response)
 
                     btcRate?.let {
                         if (ratesChanged(response.btc.value, it.minValue, it.maxValue)) {
@@ -118,15 +117,14 @@ class CheckRateService : Service() {
 
     private val createWarningNotification: (String) -> NotificationCompat.Builder = {
         NotificationCompat.Builder(this, notificationChannelId)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_baseline_trending_up_24)
             .setContentTitle(getString(R.string.warning_rate_change, it))
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setChannelId(notificationChannelId)
-            .setContentText(getString(R.string.rate_change_description))
+            .setContentText(getString(R.string.rate_change_description, it))
     }
 
     private fun ratesChanged(cryptoValue: Double, minValue: Double, maxValue: Double): Boolean {
-        Log.d(TAG, "ratesChanged: $cryptoValue $minValue $maxValue")
         if (cryptoValue > maxValue || cryptoValue < minValue) {
             return true
         }

@@ -20,7 +20,7 @@ class DatabaseModule {
     @Provides
     @Singleton
     fun providesUserDatabase(@ApplicationContext context: Context): CryptoRatesDatabase =
-        Room.databaseBuilder(context, CryptoRatesDatabase::class.java, "CryptoRatesDatabase")
+        Room.databaseBuilder(context, CryptoRatesDatabase::class.java, "CryptoRatesDB")
             .fallbackToDestructiveMigration()
             .build()
 }

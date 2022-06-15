@@ -17,8 +17,6 @@ class ErrorHandler(private val context: Context) {
 
         when (throwable) {
             is HttpException -> {
-                Log.d("handleError", "handleError: ${throwable.code()}")
-
                 val json = throwable.response()?.errorBody()!!.string()
                 val error = convert(json)
 
@@ -28,10 +26,6 @@ class ErrorHandler(private val context: Context) {
                 }
             }
         }
-
-
-        Log.d("errorHandler", "handleError1: " + throwable.message.toString())
-
         return errorMessage!!
     }
 

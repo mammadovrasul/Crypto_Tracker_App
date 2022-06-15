@@ -43,7 +43,6 @@ abstract class BaseActivity<T : ViewDataBinding?, V : BaseViewModel> :
 
 
     open fun performDataBinding() {
-//        setTheme(R.style.AppTheme)
         mViewDataBinding = DataBindingUtil.setContentView<T>(this, getLayoutId())
 
         mViewModel = if (mViewModel == null) getViewModel() else mViewModel

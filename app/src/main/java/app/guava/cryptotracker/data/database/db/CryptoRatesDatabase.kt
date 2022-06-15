@@ -7,7 +7,7 @@ import app.guava.cryptotracker.data.database.models.CryptoRange
 
 @Database(
     entities = [CryptoRange::class],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 abstract class CryptoRatesDatabase : RoomDatabase() {

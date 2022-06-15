@@ -29,8 +29,8 @@ class CryptoRateListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = viewDataBinding!!
-        ServiceUtil.startCheckRateService(requireContext())
 
+        ServiceUtil.startCheckRateService(requireContext())
         viewModel.cryptoList.observe(viewLifecycleOwner) {
             initRecyclerView(it)
         }

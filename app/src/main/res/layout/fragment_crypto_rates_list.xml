@@ -31,5 +31,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/coinHistoryTitle"
             tools:listitem="@layout/item_rate" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

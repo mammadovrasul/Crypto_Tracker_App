@@ -2,19 +2,13 @@ package app.guava.cryptotracker.presentation.ui.fragment.history
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.guava.cryptotracker.R
 import app.guava.cryptotracker.data.database.models.CryptoRange
 import app.guava.cryptotracker.databinding.FragmentRatesRangeHistoryBinding
-import app.guava.cryptotracker.domain.model.other.Rate
-import app.guava.cryptotracker.presentation.adapter.RatesAdapter
-import app.guava.cryptotracker.presentation.adapter.RatesHistoryAdapter
+import app.guava.cryptotracker.presentation.adapter.HistoryAdapter
 import app.guava.cryptotracker.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +18,7 @@ class HistoryFragment : BaseFragment<FragmentRatesRangeHistoryBinding, HistoryVi
     private lateinit var binding: FragmentRatesRangeHistoryBinding
     private lateinit var viewModel: HistoryViewModel
     private lateinit var cryptoName: String
-    private var adapter: RatesHistoryAdapter? = null
+    private var adapter: HistoryAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,7 +54,7 @@ class HistoryFragment : BaseFragment<FragmentRatesRangeHistoryBinding, HistoryVi
     private fun initRecyclerView(coinRange: List<CryptoRange>?) {
         binding.recyclerView.visibility = View.VISIBLE
         val layoutManager = LinearLayoutManager(context)
-        adapter = RatesHistoryAdapter(coinRange!!)
+        adapter = HistoryAdapter(coinRange!!)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter

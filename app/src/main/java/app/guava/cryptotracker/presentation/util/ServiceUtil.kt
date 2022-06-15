@@ -4,7 +4,8 @@ import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import app.guava.cryptotracker.presentation.services.CheckRateService
+import android.util.Log
+import app.guava.cryptotracker.presentation.services.CheckCoinRateService
 
 object ServiceUtil {
 
@@ -23,10 +24,9 @@ object ServiceUtil {
     }
 
     fun startCheckRateService(context: Context) {
+        if (!isServiceRunning(context, CheckCoinRateService::class.java)) {
 
-        if (!isServiceRunning(context, CheckRateService::class.java)) {
-
-            val intent = Intent(context, CheckRateService::class.java)
+            val intent = Intent(context, CheckCoinRateService::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 context.startForegroundService(intent)
@@ -34,6 +34,17 @@ object ServiceUtil {
                 context.startService(intent)
             }
 
+        }
+    }
+
+    fun stopCheckRateService(context: Context) {
+        if (isServiceRunning(context, CheckCoinRateService::class.java)) {
+            val serviceIntent = Intent(context, CheckCoinRateService::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.stopService(serviceIntent)
+            } else {
+                context.stopService(serviceIntent)
+            }
         }
     }
 }
