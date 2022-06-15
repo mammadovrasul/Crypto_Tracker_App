@@ -1,6 +1,5 @@
 package app.guava.cryptotracker.presentation.ui.fragment.history
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import app.guava.cryptotracker.data.database.models.CryptoRange
 import app.guava.cryptotracker.domain.useCase.SpecificCryptoRangeListUseCase
@@ -18,27 +17,17 @@ class HistoryViewModel @Inject constructor(
 ) :
     BaseViewModel() {
 
-    val cryptoList: SingleLiveEvent<CryptoRange> = SingleLiveEvent()
+    val rangeHistory: SingleLiveEvent<List<CryptoRange>?> = SingleLiveEvent()
 
 
-    fun getCryptoList(type: String) {
+    fun getCryptoData(type: String) {
         viewModelScope.launch {
-
             flow {
                 emit(specificCryptoRangeListUseCase.execute(type))
-            }
-                .flowOn(Dispatchers.IO)
-                .onStart { loading(true) }
-                .onCompletion { loading(false) }
-                .catch { errorLiveData.value = it }
+            }.flowOn(Dispatchers.IO)
                 .collect {
-                    loading(false)
-
-
-                   // cryptoList.value = it!!
-                    Log.d("login", "login: -->>--->>>" + it!!.size)
+                    rangeHistory.value = it
                 }
-
         }
     }
 }

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Crypto Tracker App</string>
 
+    <string name="crypto_list">Crypto list</string>
     <string name="error_server_error">Server error</string>
     <string name="general_error">Something went wrong</string>
     <string name="min_value">Minimum value</string>

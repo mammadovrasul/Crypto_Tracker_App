@@ -20,7 +20,6 @@ import javax.inject.Inject
 class DialogSetRange(
     private val type: String,
     private val cryptoRange: (CryptoRange) -> Unit,
-    private val navigateHistory: (String) -> Unit
 ) :
     BaseDialogFragment() {
 
@@ -52,10 +51,6 @@ class DialogSetRange(
             }
         }
 
-        binding.navigateRateHistory.setOnClickListener {
-            navigateHistory.invoke(type)
-            dismiss()
-        }
 
         return binding.root
     }
